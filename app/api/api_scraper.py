@@ -1,16 +1,17 @@
 from fastapi import APIRouter
 
-from app.schemas.sche_base import DataResponse
-from app.services.scraper import NhaTot, Base, GetImage
+from app.services.scraper import  base, getImage, nhaTot
 from fastapi.responses import HTMLResponse
-from fastapi.responses import ORJSONResponse
 from bs4 import BeautifulSoup
+from fastapi.responses import FileResponse
+import os
+
 router = APIRouter()
 
 @router.get("")
 async def getScraperFor(url: str):
     try:
-        html=Base(url)
+        html=base(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 
@@ -19,15 +20,15 @@ async def getScraperFor(url: str):
 @router.get("/getImage")
 async def getScraperFor(url: str):
     try:
-        image=GetImage(url)
-        return HTMLResponse(content=image, media_type="image/png", status_code=200)
+        image=getImage(url)
+        return FileResponse(image, media_type="image/jpeg", filename="vector_image_for_you.jpg")
     except: 
         return HTMLResponse(content="Fail to load page", status_code=400)
 
 @router.get("/nhatot")
 async def getScraperForNhaTot(url: str):
     try:
-        html=NhaTot(url)
+        html=nhaTot(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 

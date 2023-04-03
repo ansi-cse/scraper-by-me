@@ -2,30 +2,41 @@ import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 import time
 from pathlib import Path
-driver = uc.Chrome(use_subprocess=True)
-def NhaTot(url):
+from urllib.parse import urlparse
+
+def nhaTot(url):
+    driver = uc.Chrome(use_subprocess=False)
     with driver:
         driver.get(url)
         WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ShowPhoneButton_phoneButton__p5Cvt"))).click()
-    return driver.page_source
-def Base(url):
+    result=driver.page_source
+    driver.quit()
+    return result
+
+def base(url):
+    driver = uc.Chrome(use_subprocess=False)
     with driver:
         driver.get(url)
-        time.sleep(5)
         # location=driver.execute_script("""return window.paramsMap""")
-    return driver.page_source
-def GetImage(url):
+    result=driver.page_source
+    driver.quit()
+    return result
+    
+def getImage(url):
+    driver = uc.Chrome(use_subprocess=False)
     with driver:
         driver.get(url)
-        time.sleep(3)
-        p = Path(url)
+        time.sleep(0.5)
+        parseTofileName=urlparse(url).path.split("/")
+        fileName=parseTofileName[len(parseTofileName)-1]
+        p = Path(fileName)
         with open(p, 'wb') as file:
-            file.write(driver.save_screenshot(p))
-    return file
+            t=driver.find_element(By.TAG_NAME, 'img').screenshot_as_png
+            file.write(t)
+    driver.quit()
+    return fileName
    
     
     
