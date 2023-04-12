@@ -8,7 +8,7 @@
 
 ## About <a name = "about"></a>
 
-This is project for create simple scraper.
+This is project for create simple scraper(can pass cloudflare).
 
 ## Getting Started <a name = "getting_started"></a>
 
