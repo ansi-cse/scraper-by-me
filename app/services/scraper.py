@@ -6,16 +6,20 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from pathlib import Path
 from urllib.parse import urlparse
-from app.helpers.chromeDriverPool import ScrapeThread
+from app.helpers.scraperThreading import ScrapeThread
 
 def nhaTot(url):
-    driver = uc.Chrome(use_subprocess=False,headless=True)
-    with driver:
-        driver.get(url)
-        WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ShowPhoneButton_phoneButton__p5Cvt"))).click()
-    result=driver.page_source
-    driver.quit()
-    return result
+    try:
+        t = ScrapeThread(url, True, True)
+        t.start()
+        t.join()
+        with t.driver:
+            WebDriverWait(t.driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ShowPhoneButton_phoneButton__p5Cvt"))).click()
+        result=t.get_page_source()
+        t.driver.quit()
+        return result
+    except:
+        raise Exception("Have an exception")
 def base(url):
     try:
         t = ScrapeThread(url, True, True)
@@ -25,7 +29,6 @@ def base(url):
         return page_source
     except:
         raise Exception("Have an exception")
-
 def bdscom(url):
     try:
         t = ScrapeThread(url, True, True)
@@ -36,7 +39,6 @@ def bdscom(url):
         return result
     except:
         raise Exception("Have an exception")
-
 def bdscomInvestor(url):
     try:
         t = ScrapeThread(url, False, True)
@@ -49,7 +51,6 @@ def bdscomInvestor(url):
     except:
         t.driver.close()
         raise Exception("Have an exception")
-    
 def getImage(url):
     try:
         t = ScrapeThread(url, False, True)
@@ -69,20 +70,6 @@ def getImage(url):
         return fileName
     except:
         raise Exception("Have an exception")
-
-    # driver = uc.Chrome(use_subprocess=False,headless=True)
-    # with driver:
-    #     driver.get(url)
-    #     time.sleep(1)
-    #     parseTofileName=urlparse(url).path.split("/")
-    #     fileName=parseTofileName[len(parseTofileName)-1]
-    #     p = Path(fileName)
-    #     with open(p, 'wb') as file:
-    #         t=driver.find_element(By.TAG_NAME, 'img').screenshot_as_png
-    #         file.write(t)
-    # driver.quit()
-    # return fileName
-
 def tests(url):
     for i in range(1, 100):
         base(url)

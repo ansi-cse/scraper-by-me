@@ -6,14 +6,12 @@ from bs4 import BeautifulSoup
 from fastapi.responses import FileResponse
 import traceback
 from loguru import logger
-from app.helpers.chromeDriverPool import ScrapeThread
+from app.helpers.scraperThreading import ScrapeThread
 router = APIRouter()
-logger.add("app.log", rotation="500 MB")
 
 @router.get("")
 async def getScraperFor(url: str):
     try:
-        logger.info("Creating new Chrome driver instance")
         html=base(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
@@ -45,12 +43,12 @@ async def getScraperForNhaTot(url: str):
 @router.get("/bdscom")
 async def getScraperForBdsCom(url: str):
     try:
-        logger.info(url)
         html=bdscom(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 
         return HTMLResponse(content="Fail to load page", status_code=400)
+
 @router.get("/bdscom/investor")
 async def getScraperForBdsCom(url: str):
     try:
@@ -60,7 +58,6 @@ async def getScraperForBdsCom(url: str):
         return HTMLResponse(content=result, status_code=200)
     except: 
         return HTMLResponse(content="Fail to load page", status_code=400)
-
 
 @router.get("/test")
 async def test(url: str):

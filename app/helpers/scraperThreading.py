@@ -1,13 +1,17 @@
 import threading
 import undetected_chromedriver as uc
-
+from loguru import logger
 class ScrapeThread(threading.Thread):
     def __init__(self, url, quit, headless):
         threading.Thread.__init__(self)
+        logger.info("Creating new Chrome driver instance")
+        logger.info(url)
         self.url = url
         self.page_source = None
         self.driver=uc.Chrome(version_main=112, headless=headless)
+        logger.info("Creating new Chrome driver instance success")
         self.quit=quit
+        logger.info("Quit Chrome driver instance success")
   
     def run(self):
         try:
