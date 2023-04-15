@@ -16,7 +16,7 @@ These instructions will help you create a simple scraper with undetected seleniu
 
 ### Prerequisites
 
-You need have basic knowledge about python, fastapi, and selenium
+You need have basic knowledge about python, fastapi, and selenium( undetected_chromedriver )
 
 ### Running
 
