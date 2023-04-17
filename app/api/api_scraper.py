@@ -7,6 +7,7 @@ from fastapi.responses import FileResponse
 import traceback
 from loguru import logger
 from app.helpers.scraperThreading import ScrapeThread
+import time
 router = APIRouter()
 
 @router.get("")
@@ -44,6 +45,7 @@ async def getScraperForNhaTot(url: str):
 async def getScraperForBdsCom(url: str):
     try:
         html=bdscom(url)
+        time.sleep(1)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 
@@ -61,9 +63,10 @@ async def getScraperForBdsCom(url: str):
 
 @router.get("/test")
 async def test(url: str):
-    t = ScrapeThread(url)
-    t.start()
-    t.join()
-    page_source = t.get_page_source()
-    return {"results": page_source}
+    for x in range(0,10):
+        t = ScrapeThread(url, True, True)
+        t.start()
+        t.join()
+        page_source = t.get_page_source()
+    return {"results": "ok"}
     
