@@ -6,14 +6,13 @@ from bs4 import BeautifulSoup
 from fastapi.responses import FileResponse
 import traceback
 from loguru import logger
-from app.helpers.chromeDriverPool import ScrapeThread
+from app.helpers.scraperThreading import ScrapeThread
+import time
 router = APIRouter()
-logger.add("app.log", rotation="500 MB")
 
 @router.get("")
 async def getScraperFor(url: str):
     try:
-        logger.info("Creating new Chrome driver instance")
         html=base(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
@@ -45,12 +44,13 @@ async def getScraperForNhaTot(url: str):
 @router.get("/bdscom")
 async def getScraperForBdsCom(url: str):
     try:
-        logger.info(url)
         html=bdscom(url)
+        time.sleep(1)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 
         return HTMLResponse(content="Fail to load page", status_code=400)
+
 @router.get("/bdscom/investor")
 async def getScraperForBdsCom(url: str):
     try:
@@ -61,12 +61,12 @@ async def getScraperForBdsCom(url: str):
     except: 
         return HTMLResponse(content="Fail to load page", status_code=400)
 
-
 @router.get("/test")
 async def test(url: str):
-    t = ScrapeThread(url)
-    t.start()
-    t.join()
-    page_source = t.get_page_source()
-    return {"results": page_source}
+    for x in range(0,10):
+        t = ScrapeThread(url, True, True)
+        t.start()
+        t.join()
+        page_source = t.get_page_source()
+    return {"results": "ok"}
     

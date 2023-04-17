@@ -1,0 +1,36 @@
+version: '3'
+services:
+  app:
+    build:
+      context: . 
+      shm_size: 1gb
+    shm_size: 2gb
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 16
+    deploy:
+      replicas: 2
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=PathPrefix(`/`)"
+      - "traefik.http.services.app.loadbalancer.server.port=8000"
+    networks:
+      - web
+  traefik:
+    image: traefik:v2.5
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.insecure=true
+      - --api.dashboard=true
+    labels:
+      - "traefik.enable=true"
+      # - "traefik.http.routers.traefik.rule=Host(`localhost`)"
+    ports:
+      - "8001:80"
+      - "8081:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - web
+networks:
+  web:
