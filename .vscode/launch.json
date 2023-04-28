@@ -15,7 +15,7 @@
                 "--port",
                 "8000",
                 "--workers",
-                "16"
+                "32"
             ],
             "justMyCode": true
         }
