@@ -1,0 +1,147 @@
+[
+    {
+        "code": "1",
+        "name": "ATM & ngân hàng",
+        "iconUrl": ""
+    },
+    {
+        "code": "2",
+        "name": "Thang máy",
+        "color": ""
+    },
+    {
+        "code": "3",
+        "name": "Lối thoát hiểm",
+        "color": ""
+    },
+    {
+        "code": "4",
+        "name": "Đường chạy bộ",
+        "color": ""
+    },
+    {
+        "code": "5",
+        "name": "Trường tiểu học",
+        "color": ""
+    },
+    {
+        "code": "6",
+        "name": "Phòng yoga",
+        "color": ""
+    },
+    {
+        "code": "7",
+        "name": "Hồ bơi vô cực",
+        "color": ""
+    },
+    {
+        "code": "8",
+        "name": "Phòng xông hơi",
+        "color": ""
+    },
+    {
+        "code": "9",
+        "name": "Sân bóng đá",
+        "iconUrl": ""
+    },
+    {
+        "code": "10",
+        "name": "Lễ tân",
+        "color": ""
+    },
+    {
+        "code": "11",
+        "name": "Vui chơi trẻ em",
+        "color": ""
+    },
+    {
+        "code": "12",
+        "name": "HT điều hòa",
+        "color": ""
+    },
+    {
+        "code": "13",
+        "name": "HT an ninh",
+        "color": ""
+    },
+    {
+        "code": "14",
+        "name": "Nhà hàng",
+        "color": ""
+    },
+    {
+        "code": "15",
+        "name": "Hệ thống pccc",
+        "color": ""
+    },
+    {
+        "code": "16",
+        "name": "Spa",
+        "color": ""
+    },
+    {
+        "code": "17",
+        "name": "Cửa hàng tiện lợi",
+        "iconUrl": ""
+    },
+    {
+        "code": "18",
+        "name": "Trường mẫu giáo",
+        "color": ""
+    },
+    {
+        "code": "19",
+        "name": "Phòng sinh hoạt",
+        "color": ""
+    },
+    {
+        "code": "20",
+        "name": "Công viên",
+        "color": ""
+    },
+    {
+        "code": "21",
+        "name": "Trung tâm thương mại",
+        "color": ""
+    },
+    {
+        "code": "22",
+        "name": "BBQ",
+        "color": ""
+    },
+    {
+        "code": "23",
+        "name": "Phòng gym",
+        "color": ""
+    },
+    {
+        "code": "24",
+        "name": "Sân bóng rổ",
+        "color": ""
+    },
+    {
+        "code": "25",
+        "name": "Hồ bơi",
+        "color": ""
+    },
+    {
+        "code": "26",
+        "name": "Trạm y tế",
+        "color": ""
+    },
+    {
+        "code": "27",
+        "name": "Sân tennis",
+        "color": ""
+    },
+    {
+        "code": "28",
+        "name": "Bãi đỗ xe",
+        "color": ""
+    },
+    {
+        "code": "29",
+        "name": "Siêu thị",
+        "color": ""
+    }
+]

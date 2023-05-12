@@ -10,36 +10,42 @@ import traceback
 import time
 from pixelbin import PixelbinClient, PixelbinConfig
 import asyncio
-def nhaTot(url):
+async def nhaTot(url):
+    result=None
     try:
-        t = ScrapeThread(url, True, True)
-        t.start()
-        t.join()
-        with t.driver:
-            WebDriverWait(t.driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ShowPhoneButton_phoneButton__p5Cvt"))).click()
-        result=t.get_page_source()
-        t.driver.close()
-        return result
+        loop = asyncio.get_running_loop()
+        future = loop.run_in_executor(None, ScrapeThread, url, True, True)
+        result = await future
+        WebDriverWait(result.get_driver(), 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ShowPhoneButton_phoneButton__p5Cvt"))).click()
+        time.sleep(15)
+        pageSource=result.get_driver().page_source
+        return pageSource
     except:
-        t.driver.close()
+        traceback.print_exc()
         raise Exception("Have an exception")
+    finally:
+        result.get_driver().close()
 
-def base(url):
-    t = ScrapeThread(url, True, True)
+async def base(url):
+    result=None
     try:
-        t.start()
-        t.join()
-        page_source = t.get_page_source()
-        t.get_driver().close()
-        return page_source
+        loop = asyncio.get_running_loop()
+        future = loop.run_in_executor(None, ScrapeThread, url, True, True)
+        result = await future
+        time.sleep(1)
+        pageSource=result.get_driver().page_source
+        return pageSource
     except:
-        t.get_driver().close()
+        traceback.print_exc()
         raise Exception("Have an exception")
+    finally:
+        result.get_driver().close()
+
 async def bdscom(url: str):
     result=None
     try:
         loop = asyncio.get_running_loop()
-        future = loop.run_in_executor(None, ScrapeThread, url, True, False)
+        future = loop.run_in_executor(None, ScrapeThread, url, True, True)
         result = await future
         WebDriverWait(result.get_driver(), 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".re__sidebar-box.re__contact-box.js__contact-box .phoneEvent.js__phone-event"))).click()
         time.sleep(15)
@@ -50,20 +56,6 @@ async def bdscom(url: str):
         raise Exception("Have an exception")
     finally:
         result.get_driver().close()
-# def bdscom(url):
-#     t = ScrapeThread(url, False, True)
-#     try:
-#         t.start()
-#         t.join()
-#         WebDriverWait(t.driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".re__sidebar-box.re__contact-box.js__contact-box .phoneEvent.js__phone-event"))).click()
-#         time.sleep(6)
-#         result=t.driver.page_source
-#         t.get_driver().close()
-#         return result
-#     except:
-#         t.get_driver().close()
-#         traceback.print_exc()
-#         raise Exception("Have an exception")
 def bdscomInvestor(url):
     t = ScrapeThread(url, False, True)
     try:
@@ -99,7 +91,7 @@ def bdscomPersonalBroker(url):
         t.driver.get(url=url)
         time.sleep(3)
         result=t.driver.page_source
-        t.get_driver().close()
+        t.get_driver().quit()
         return result
     except:
         t.get_driver().close()

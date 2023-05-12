@@ -15,7 +15,7 @@ router = APIRouter()
 @router.get("")
 async def getScraperFor(url: str):
     try:
-        html=base(url)
+        html=await base(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 
@@ -37,7 +37,7 @@ async def getScraperFor(url: str):
 @router.get("/nhatot")
 async def getScraperForNhaTot(url: str):
     try:
-        html=nhaTot(url)
+        html=await nhaTot(url)
         result=str(BeautifulSoup(html))
         return HTMLResponse(content=result, status_code=200)
     except: 
