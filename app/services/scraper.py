@@ -14,7 +14,7 @@ async def nhaTot(url):
     result=None
     try:
         loop = asyncio.get_running_loop()
-        future = loop.run_in_executor(None, ScrapeThread, url, True, True)
+        future = loop.run_in_executor(None, ScrapeThread, url, False, True)
         result = await future
         WebDriverWait(result.get_driver(), 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ShowPhoneButton_phoneButton__p5Cvt"))).click()
         time.sleep(15)
@@ -45,7 +45,7 @@ async def bdscom(url: str):
     result=None
     try:
         loop = asyncio.get_running_loop()
-        future = loop.run_in_executor(None, ScrapeThread, url, True, True)
+        future = loop.run_in_executor(None, ScrapeThread, url, False, True)
         result = await future
         WebDriverWait(result.get_driver(), 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".re__sidebar-box.re__contact-box.js__contact-box .phoneEvent.js__phone-event"))).click()
         time.sleep(15)
@@ -91,30 +91,34 @@ def bdscomPersonalBroker(url):
         t.driver.get(url=url)
         time.sleep(3)
         result=t.driver.page_source
-        t.get_driver().quit()
         return result
     except:
-        t.get_driver().close()
         raise Exception("Have an exception")
-def getImage(url):
+    finally:
+        t.get_driver().close()
+async def getImage(url):
+    result=None
     try:
-        t = ScrapeThread(url, False, True)
-        t.start()
-        t.join()
+        loop = asyncio.get_running_loop()
+        future = loop.run_in_executor(None, ScrapeThread, url, True, True)
+        result = await future
         parseTofileName=urlparse(url).path.split("/")
         fileName=parseTofileName[len(parseTofileName)-1]
         p = Path(fileName)
         with open(p, 'wb') as file:
             if(fileName.endswith(".svg")):
-                fileToWrite=t.driver.find_element(By.TAG_NAME, 'svg').screenshot_as_png
+                fileToWrite=result.get_driver().find_element(By.TAG_NAME, 'svg').screenshot_as_png
             else:
-                fileToWrite=t.driver.find_element(By.TAG_NAME, 'img').screenshot_as_png
+                fileToWrite=result.get_driver().find_element(By.TAG_NAME, 'img').screenshot_as_png
             time.sleep(1)
-            t.driver.quit()
             file.write(fileToWrite)
         return fileName
     except:
+        traceback.print_exc()
         raise Exception("Have an exception")
+    finally:
+        result.get_driver().quit()
+
 def removeWaterMask(url):
     try:
         t = ScrapeThread("https://www.watermarkremover.io/upload", False, False)

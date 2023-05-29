@@ -28,7 +28,7 @@ class ScrapeThread():
     def __init__(self, url, quit, headless):
         self.url = url
         self.page_source = None
-        self.driver = uc.Chrome(version_main=112, headless=headless, use_subprocess=False, no_sandbox=True)
+        self.driver = uc.Chrome(version_main=113, headless=headless, use_subprocess=False, no_sandbox=True)
         self.quit = quit
         self.driver.get(self.url)
         self.page_source = self.driver.page_source
